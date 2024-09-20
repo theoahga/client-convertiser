@@ -25,7 +25,7 @@ namespace ClientConvertisseurV1.Services
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public WSService GetInstance()
+        public static WSService GetInstance()
         {
             if (_instance == null)
             {
@@ -33,7 +33,7 @@ namespace ClientConvertisseurV1.Services
                 {
                     if (_instance == null)
                     {
-                        _instance = new WSService("http://localhost:7223/api/");
+                        _instance = new WSService("https://localhost:7192/api/");
                     }
                 }
             }

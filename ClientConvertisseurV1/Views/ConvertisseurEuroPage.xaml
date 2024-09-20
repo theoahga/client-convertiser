@@ -9,7 +9,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+    <RelativePanel>
+        <TextBlock x:Name="First" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="10">Montant en Euros</TextBlock>
+        <TextBox x:Name="Second" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="First"></TextBox>
+        <TextBlock x:Name="Third" RelativePanel.AlignHorizontalCenterWithPanel="True"  RelativePanel.Below="Second" Margin="10">Devise</TextBlock>
+        <ComboBox x:Name="CbxDevise" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="Third" Margin="10" ItemsSource="{Binding}" SelectedValuePath="Id" DisplayMemberPath="NomDevise" />
+        <Button x:Name="Five" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="CbxDevise" Margin="10" Click="BtnConvertir_Click">Convertir</Button>
+        <TextBlock x:Name="Six" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="Five" Margin="10">Montant en devises</TextBlock>
+        <TextBox x:Name="Seven" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="Six" Margin="10" IsReadOnly="True"></TextBox>
+    </RelativePanel>
 </Page>
