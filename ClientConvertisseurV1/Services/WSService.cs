@@ -12,8 +12,10 @@ namespace ClientConvertisseurV1.Services
 {
     internal class WSService : IService
     {
+        private static WSService _instance;
+        private static readonly object _lock = new object();
         private HttpClient HttpClient { get; set; }
-        private static WSService instance;
+
         private WSService(String uri)
         {
             HttpClient = new HttpClient();
@@ -21,6 +23,21 @@ namespace ClientConvertisseurV1.Services
             HttpClient.BaseAddress = new Uri(uri);
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        public WSService GetInstance()
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new WSService("http://localhost:7223/api/");
+                    }
+                }
+            }
+            return _instance;
         }
 
         public async Task<List<Devise>> GetDevisesAsync(string nomControleur)
@@ -34,16 +51,6 @@ namespace ClientConvertisseurV1.Services
                 return null;
 
             }
-        }
-
-        public WSService GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new WSService("http://localhost:7223/api/");
-                return instance;
-            }
-            return instance;
         }
     }
 }
