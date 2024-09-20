@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using WSConvertisseur.Models;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
+using WSConvertisseur.Models;
 
 namespace ClientConvertisseurV1.Services
 {
@@ -19,7 +17,7 @@ namespace ClientConvertisseurV1.Services
         private WSService(String uri)
         {
             HttpClient = new HttpClient();
-            //http://localhost:7223/api/
+            //http://localhost:7192/api/
             HttpClient.BaseAddress = new Uri(uri);
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -42,15 +40,23 @@ namespace ClientConvertisseurV1.Services
 
         public async Task<List<Devise>> GetDevisesAsync(string nomControleur)
         {
+            var devises = new List<Devise>();
             try
             {
-                return await HttpClient.GetFromJsonAsync<List<Devise>>(nomControleur);
+                devises = await HttpClient.GetFromJsonAsync<List<Devise>>(nomControleur);
             }
-            catch (Exception)
+            catch (HttpRequestException ex)
             {
-                return null;
-
+                Console.WriteLine($"Api isn't accessible. Error: {ex.Message}");
+                throw;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred. Error: {ex.Message}");
+                throw;
+            }
+
+            return devises;
         }
     }
 }
